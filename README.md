@@ -7,13 +7,10 @@ should perform a safety check that _to and _amounts arrays have the same length.
 
 ## Sample Inputs and Outputs:
 ### Input: 
-`transferBatch(["0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B",
-"0x4E83362442B8d1bec281594CEA3050c8EB01311C"], [100, 200])`
+`transferBatch(["0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B", "0x4E83362442B8d1bec281594CEA3050c8EB01311C"], [100, 200])`
 
 ### Output:
-`100 tokens transferred to address
-"0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B" and 200 tokens
-transferred to address "0x4E83362442B8d1bec281594CEA3050c8EB01311C".`
+`100 tokens transferred to address "0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B" and 200 tokens transferred to address "0x4E83362442B8d1bec281594CEA3050c8EB01311C".`
 
 ## Test Case:
 1. Execute the ‘transferBatch()’ function with valid addresses and amounts.
