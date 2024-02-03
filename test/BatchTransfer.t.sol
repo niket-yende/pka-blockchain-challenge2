@@ -10,11 +10,12 @@ contract BatchTransferTest is Test {
     BatchTransfer public batchTransfer;
     MyToken public myToken;
     uint256 public constant totalSupply = 10000;
+    uint64 public constant batchLimit = 10;
     
     function setUp() public {
         // Deploy the dummy ERC20 token
         myToken = new MyToken();
-        batchTransfer = new BatchTransfer(address(myToken));
+        batchTransfer = new BatchTransfer(address(myToken), batchLimit);
         // mint the tokens for BatchTransfer contract
         myToken.mint(address(batchTransfer), totalSupply);
     }
@@ -51,9 +52,6 @@ contract BatchTransferTest is Test {
     }
 
     function test_DifferentArrayLength() public {
-        uint contractBalanceBefore = myToken.balanceOf(address(batchTransfer));
-        assertEq(contractBalanceBefore, totalSupply);
-
         // amounts to be transferred
         uint256[] memory amounts = new uint256[](3);
         amounts[0] = 200;
@@ -71,9 +69,6 @@ contract BatchTransferTest is Test {
     }
    
     function test_ZeroAddress() public {
-        uint contractBalanceBefore = myToken.balanceOf(address(batchTransfer));
-        assertEq(contractBalanceBefore, totalSupply);
-
         // amounts to be transferred
         uint256[] memory amounts = new uint256[](2);
         amounts[0] = 200;
@@ -91,9 +86,6 @@ contract BatchTransferTest is Test {
     }
 
     function test_InsufficientBalance() public {
-        uint contractBalanceBefore = myToken.balanceOf(address(batchTransfer));
-        assertEq(contractBalanceBefore, totalSupply);
-
         // amounts to be transferred
         uint256[] memory amounts = new uint256[](2);
         amounts[0] = 2000;
@@ -108,5 +100,23 @@ contract BatchTransferTest is Test {
         // Perform batch transfer
         batchTransfer.transferBatch(toAddress, amounts);    
         console.log('Insufficient balance test passed');
+    }
+
+    // Added batch limit to protect from denial of service attack
+    function test_BatchLimitExceeded() public {
+        // amounts to be transferred
+        uint256[] memory amounts = new uint256[](12);
+        // Recepient addresses
+        address[] memory toAddress = new address[](12);
+        
+        for (uint index = 0; index < amounts.length; index++) {
+            toAddress[index] = address(uint160(uint(keccak256(abi.encodePacked(index))))); 
+            amounts[index] = 20 * (2 ** index);
+        }
+
+        vm.expectRevert("Exceeded batch limit");
+        // Perform batch transfer
+        batchTransfer.transferBatch(toAddress, amounts);    
+        console.log('Batch limit exceeded test passed');
     }
 }
