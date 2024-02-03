@@ -1,0 +1,4 @@
+BatchTransferTest:test_DifferentArrayLength() (gas: 23282)
+BatchTransferTest:test_InsufficientBalance() (gas: 56593)
+BatchTransferTest:test_TransferBatch() (gas: 178324)
+BatchTransferTest:test_ZeroAddress() (gas: 23344)
