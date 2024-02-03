@@ -6,9 +6,6 @@ import {BatchTransfer} from "../src/BatchTransfer.sol";
 import {MyToken} from "../src/MyToken.sol";
 import "forge-std/console.sol";
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-
 contract BatchTransferTest is Test {
     BatchTransfer public batchTransfer;
     MyToken public myToken;
