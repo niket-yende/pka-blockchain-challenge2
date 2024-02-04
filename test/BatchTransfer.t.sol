@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity 0.8.24;
 
 import {Test, console2} from "forge-std/Test.sol";
 import {BatchTransfer} from "../src/BatchTransfer.sol";
@@ -9,21 +9,21 @@ import "forge-std/console.sol";
 contract BatchTransferTest is Test {
     BatchTransfer public batchTransfer;
     MyToken public myToken;
-    uint256 public constant totalSupply = 10000;
-    uint64 public constant batchLimit = 10;
+    uint256 public constant TOTAL_SUPPLY = 10000;
+    uint64 public constant BATCH_LIMIT = 10;
     
     function setUp() public {
         // Deploy the dummy ERC20 token
         myToken = new MyToken();
-        batchTransfer = new BatchTransfer(address(myToken), batchLimit);
+        batchTransfer = new BatchTransfer(address(myToken), BATCH_LIMIT);
         // mint the tokens for BatchTransfer contract
-        myToken.mint(address(batchTransfer), totalSupply);
+        myToken.mint(address(batchTransfer), TOTAL_SUPPLY);
     }
 
     function test_TransferBatch() public {
         uint contractBalanceBefore = myToken.balanceOf(address(batchTransfer));
         console.log('contractBalanceBefore: ', contractBalanceBefore);
-        assertEq(contractBalanceBefore, totalSupply);
+        assertEq(contractBalanceBefore, TOTAL_SUPPLY);
 
         uint totalAmountTransferred = 0;
         // amounts to be transferred
@@ -103,7 +103,7 @@ contract BatchTransferTest is Test {
     }
 
     // Added batch limit to protect from denial of service attack
-    function test_BatchLimitExceeded() public {
+    function test_BATCH_LIMITExceeded() public {
         // amounts to be transferred
         uint256[] memory amounts = new uint256[](12);
         // Recepient addresses

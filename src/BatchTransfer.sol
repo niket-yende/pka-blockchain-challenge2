@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity 0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 contract BatchTransfer is Ownable, ReentrancyGuard {
-    IERC20 public token;
+    IERC20 public immutable token;
     uint64 private immutable batchLimit;
 
     event TokenTransfer(address _sender, address _receiver, uint _amount);
@@ -30,7 +30,8 @@ contract BatchTransfer is Ownable, ReentrancyGuard {
             emit TokenTransfer(address(this), _to[i], _amounts[i]);
 
             // Transfer tokens to receiver address
-            token.transfer(_to[i], _amounts[i]);
+            bool success = token.transfer(_to[i], _amounts[i]);
+            require(success, 'Token transfer failed');
         }
     }
 }
