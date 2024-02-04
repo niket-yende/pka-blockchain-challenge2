@@ -103,7 +103,7 @@ contract BatchTransferTest is Test {
     }
 
     // Added batch limit to protect from denial of service attack
-    function test_BATCH_LIMITExceeded() public {
+    function test_batchLimitExceeded() public {
         // amounts to be transferred
         uint256[] memory amounts = new uint256[](12);
         // Recepient addresses
